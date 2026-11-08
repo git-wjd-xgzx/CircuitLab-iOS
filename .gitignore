@@ -1,0 +1,25 @@
+# build output
+build/
+DerivedData/
+Payload/
+*.ipa
+*.dSYM/
+
+# preview tooling
+node_modules/
+package.json
+package-lock.json
+preview/node_modules/
+preview/debug.png
+preview/debug.js
+preview/drag.js
+preview/touch.js
+preview/shot.js
+preview/mojibake-lines.txt
+preview/actual-nonascii.txt
+
+# macOS / Xcode
+.DS_Store
+xcuserdata/
+*.xcuserstate
+project.xcworkspace/xcuserdata/
