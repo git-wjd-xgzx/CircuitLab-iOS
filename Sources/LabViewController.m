@@ -53,11 +53,20 @@
 
     NSString *pagePath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html"];
     if (pagePath) {
-        NSURL *pageURL = [NSURL fileURLWithPath:pagePath];
-        NSURLRequest *request = [NSURLRequest requestWithURL:pageURL
-                                                 cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
-                                             timeoutInterval:10.0];
-        [webView loadRequest:request];
+        // Load the document as a string and use a nil base URL. Everything
+        // (styles, scripts, canvas artwork) is inline, so this avoids needing
+        // NSURLRequest/CFNetwork at all — one less framework that changed
+        // between iOS 4.3 and modern SDKs.
+        NSError *readError = nil;
+        NSString *page = [NSString stringWithContentsOfFile:pagePath
+                                                   encoding:NSUTF8StringEncoding
+                                                      error:&readError];
+        (void)readError;
+        if (page) {
+            [webView loadHTMLString:page baseURL:nil];
+        } else {
+            [self showLoadFailure];
+        }
     } else {
         [self showLoadFailure];
     }
@@ -85,7 +94,11 @@
                                      alpha:1.0];
     label.font = [UIFont boldSystemFontOfSize:16.0];
     label.numberOfLines = 3;
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
+    label.textAlignment = NSTextAlignmentCenter;
+#else
     label.textAlignment = UITextAlignmentCenter;
+#endif
     label.text = @"实验台加载失败\n请重新打开应用";
     [self.view addSubview:label];
     [label release];
@@ -96,7 +109,7 @@
 }
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 #endif
