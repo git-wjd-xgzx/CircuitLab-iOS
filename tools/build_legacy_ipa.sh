@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 #
 # Cross-compile CircuitLab for armv7 / iOS 4.3 with an old iOS SDK.
 #
@@ -31,6 +31,13 @@ fi
 
 CC="${CC:-$(xcrun --find clang)}"
 MIN_OS="4.3"
+
+# The iOS 10.3 SDK ships only text stubs, no crt. Without a crt1.3.1.o
+# modern ld silently bumps the minimum OS to 7.0. This small fat object
+# (armv6/armv7/armv7s/armv7k) restores true 4.3 linking.
+if [ -f "$ROOT/tools/crt1.3.1.o" ] && [ ! -f "$SDK/usr/lib/crt1.3.1.o" ]; then
+  cp "$ROOT/tools/crt1.3.1.o" "$SDK/usr/lib/crt1.3.1.o"
+fi
 
 echo "==> SDK:  $SDK"
 echo "==> CC:   $CC"
@@ -102,3 +109,4 @@ fi
 echo
 echo "Done. Install on a jailbroken iOS 4.3+ device with AppSync/afc2,"
 echo "or re-sign the .app with your own Apple developer certificate."
+
