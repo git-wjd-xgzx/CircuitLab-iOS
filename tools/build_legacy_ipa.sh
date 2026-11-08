@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 #
 # Cross-compile CircuitLab for armv7 / iOS 4.3 with an old iOS SDK.
 #
@@ -109,4 +109,3 @@ fi
 echo
 echo "Done. Install on a jailbroken iOS 4.3+ device with AppSync/afc2,"
 echo "or re-sign the .app with your own Apple developer certificate."
-
