@@ -1,0 +1,55 @@
+name: Build iOS 4.3 IPA (armv7)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain information
+        run: |
+          xcodebuild -version
+          xcrun --find clang
+          xcrun clang --version | head -3
+
+      - name: Install ldid
+        run: brew install ldid
+
+      - name: Fetch an armv7-capable iOS SDK
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse \
+            https://github.com/xybp888/iOS-SDKs.git sdk-repo
+          cd sdk-repo
+          git sparse-checkout set iPhoneOS10.3.sdk
+          du -sh iPhoneOS10.3.sdk
+          test -d iPhoneOS10.3.sdk/System/Library/Frameworks/UIKit.framework
+
+      - name: Build with iOS 4.3 deployment target
+        run: |
+          chmod +x tools/build_legacy_ipa.sh
+          bash tools/build_legacy_ipa.sh "$PWD/sdk-repo/iPhoneOS10.3.sdk" "$PWD/build"
+
+      - name: Verify architecture and minimum OS
+        run: |
+          set -e
+          BIN=build/CircuitLab.app/CircuitLab
+          file "$BIN"
+          vtool -show-build "$BIN"
+          otool -arch armv7 -l "$BIN" | grep -A5 LC_VERSION_MIN_IPHONEOS
+          unzip -l build/CircuitLab-unsigned.ipa
+          if [ -f build/CircuitLab-jailbreak.ipa ]; then unzip -l build/CircuitLab-jailbreak.ipa; fi
+
+      - name: Upload IPA files
+        uses: actions/upload-artifact@v4
+        with:
+          name: CircuitLab-iOS4.3-armv7
+          path: |
+            build/CircuitLab-unsigned.ipa
+            build/CircuitLab-jailbreak.ipa
+          if-no-files-found: warn
+          retention-days: 30
