@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<title>电学实验室</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #10191c;
+  -webkit-text-size-adjust: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+body, div, span, p, h1, h2, h3, button, canvas {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Helvetica Neue", Helvetica, "Heiti SC", "STHeiti", Arial, sans-serif;
+  color: #e7dfcc;
+}
+#app {
+  position: relative;
+  width: 320px;
+  height: 100%;
+  min-height: 460px;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #132125;
+  background: -webkit-linear-gradient(top, #1d3034 0%, #0d1619 100%);
+}
+.hidden { display: none !important; }
+
+/* ---------- header ---------- */
+#topbar {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 36px;
+  background: -webkit-linear-gradient(top, #2d4247 0%, #1a292d 100%);
+  border-bottom: 1px solid #4d6064;
+  box-shadow: 0 1px 3px rgba(0,0,0,.55);
+  z-index: 20;
+}
+#brandMark {
+  position: absolute;
+  left: 8px; top: 6px;
+  width: 24px; height: 24px;
+  border-radius: 12px;
+  background: #d7b06a;
+  background: -webkit-linear-gradient(top, #f0d69b, #aa7f39);
+  border: 1px solid #6e4d1c;
+  color: #20180b;
+  font: bold 14px/22px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-align: center;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 1px 2px rgba(0,0,0,.5);
+}
+#brandText {
+  position: absolute;
+  left: 39px; top: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #f4ead4;
+  text-shadow: 0 -1px 0 rgba(0,0,0,.8);
+}
+#brandSub {
+  position: absolute;
+  left: 40px; top: 22px;
+  font-size: 7px;
+  letter-spacing: 1.7px;
+  color: #8fa7a9;
+}
+#helpBtn {
+  position: absolute;
+  right: 8px; top: 6px;
+  width: 24px; height: 24px;
+  padding: 0;
+  border-radius: 12px;
+  border: 1px solid #718488;
+  background: -webkit-linear-gradient(top, #43585c, #26373a);
+  color: #efe4cd;
+  font: bold 13px/21px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 1px 2px rgba(0,0,0,.5);
+}
+#helpBtn:active { background: #162326; }
+
+/* ---------- meters ---------- */
+#meters {
+  position: absolute;
+  left: 0; top: 36px;
+  width: 100%; height: 170px;
+  padding: 5px 8px 0;
+}
+.meter {
+  position: relative;
+  float: left;
+  width: 148px; height: 166px;
+  padding: 5px 5px 0;
+  border: 1px solid #596166;
+  border-radius: 8px;
+  background: -webkit-linear-gradient(top, #3b4347 0%, #24292c 42%, #171a1c 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 0 rgba(0,0,0,.8), 0 3px 5px rgba(0,0,0,.55);
+}
+.meter.first { margin-right: 8px; }
+.meter:before, .meter:after {
+  content: "";
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 3px;
+  background: -webkit-radial-gradient(circle at 35% 30%, #c9ced0, #555b5e 55%, #202325);
+  box-shadow: 0 1px 1px rgba(0,0,0,.7);
+}
+.meter:before { left: 3px; top: 3px; }
+.meter:after { right: 3px; bottom: 3px; }
+.mhead {
+  position: relative;
+  height: 20px;
+  line-height: 20px;
+  padding: 0 1px;
+}
+.mbadge {
+  display: inline-block;
+  width: 16px; height: 16px;
+  margin-top: 1px;
+  border-radius: 8px;
+  background: #e8ddc4;
+  border: 1px solid #645538;
+  color: #2a2417;
+  font: bold 11px/14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-align: center;
+  vertical-align: top;
+}
+.mname {
+  margin-left: 3px;
+  color: #f0e6d1;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: .5px;
+}
+.range {
+  position: absolute;
+  right: 0; top: 3px;
+  height: 14px;
+  padding: 0 4px;
+  border: 1px solid #4e5c5f;
+  border-radius: 7px;
+  background: #0e181a;
+  color: #cfe3c7;
+  font: 7px/12px "Courier New", monospace;
+  letter-spacing: .2px;
+}
+.bezel {
+  width: 136px;
+  height: 98px;
+  margin: 0 auto;
+  padding: 1px;
+  border: 1px solid #0c0d0e;
+  border-radius: 4px;
+  background: #747a7b;
+  background: -webkit-linear-gradient(top, #9ba1a1, #52595a);
+  box-shadow: 0 1px 3px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.35);
+  overflow: hidden;
+}
+.bezel canvas {
+  display: block;
+  width: 134px;
+  height: 96px;
+  border-radius: 3px;
+}
+.lcd {
+  position: relative;
+  height: 25px;
+  margin: 3px 2px 0;
+  padding: 0 5px;
+  border: 1px solid #050807;
+  border-radius: 3px;
+  background: -webkit-linear-gradient(top, #0a1b13, #07120d);
+  box-shadow: inset 0 1px 4px #000, 0 1px 0 rgba(255,255,255,.12);
+  text-align: right;
+  overflow: hidden;
+}
+.lcd .num {
+  color: #9bffc5;
+  font: bold 16px/22px "Courier New", Courier, monospace;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px rgba(80,255,160,.55);
+}
+.lcd .unit {
+  margin-left: 2px;
+  color: #74c995;
+  font: 8px/22px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.lcd .ghost {
+  position: absolute;
+  left: 5px; top: 3px;
+  color: rgba(130,255,185,.10);
+  font: bold 14px/18px "Courier New", monospace;
+  letter-spacing: 1px;
+}
+.mfoot {
+  height: 13px;
+  padding: 1px 2px 0;
+  color: #8ea1a3;
+  font-size: 7px;
+  letter-spacing: .3px;
+  text-align: center;
+}
+.mfoot b { color: #d7b06a; font-weight: bold; }
+
+/* ---------- bench ---------- */
+#bench {
+  position: absolute;
+  left: 0; top: 206px; bottom: 102px;
+  width: 100%;
+  padding: 7px 8px;
+  background: #0e3534;
+  background: -webkit-linear-gradient(top, #124442 0%, #0b2e2d 100%);
+  border-top: 2px solid #c09a57;
+  border-bottom: 2px solid #071a19;
+  box-shadow: inset 0 0 24px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.1);
+  overflow: hidden;
+  z-index: 10;
+}
+#bench:before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-image: -webkit-repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0px, rgba(255,255,255,.025) 1px, transparent 1px, transparent 16px);
+  pointer-events: none;
+}
+#bench:after {
+  content: "";
+  position: absolute;
+  left: 10px; right: 10px; top: 24px;
+  height: 1px;
+  background: rgba(211,177,104,.20);
+  box-shadow: 0 82px 0 rgba(211,177,104,.20);
+  pointer-events: none;
+}
+.benchCol {
+  position: absolute;
+  top: 7px; bottom: 7px;
+  border: 1px solid rgba(198,160,88,.32);
+  border-radius: 5px;
+  background: rgba(2,17,17,.32);
+  box-shadow: inset 0 0 12px rgba(0,0,0,.28);
+}
+#leftCol { left: 8px; width: 86px; }
+#rightCol { right: 8px; width: 88px; }
+.colTitle {
+  display: block;
+  padding-top: 5px;
+  color: #d7c398;
+  font-size: 8px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.colSub {
+  display: block;
+  color: #769390;
+  font-size: 6px;
+  text-align: center;
+  letter-spacing: .3px;
+}
+.voltRow {
+  height: 22px;
+  margin: 5px 5px 0;
+  text-align: center;
+}
+.vb {
+  width: 23px; height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #46605c;
+  border-right-width: 0;
+  background: -webkit-linear-gradient(top, #2a4642, #142927);
+  color: #a7c1b8;
+  font: bold 8px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  vertical-align: top;
+}
+.vb.first { border-radius: 3px 0 0 3px; }
+.vb.last { border-right-width: 1px; border-radius: 0 3px 3px 0; }
+.vb.active {
+  background: -webkit-linear-gradient(top, #f1d58d, #b7893e);
+  border-color: #f0d899;
+  color: #2a200c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+}
+.power {
+  position: absolute;
+  left: 6px; bottom: 7px;
+  width: 72px; height: 29px;
+  padding: 0;
+  border: 1px solid #4e6560;
+  border-radius: 15px;
+  background: -webkit-linear-gradient(top, #2d4541, #132523);
+  color: #b9cac2;
+  font: bold 8px/27px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: .5px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), 0 2px 3px rgba(0,0,0,.45);
+}
+.power .knob {
+  position: absolute;
+  left: 3px; top: 3px;
+  width: 21px; height: 21px;
+  border-radius: 11px;
+  background: -webkit-linear-gradient(top, #c9d1cb, #737d78);
+  box-shadow: 0 1px 2px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.6);
+  -webkit-transition: left .18s ease-out;
+}
+.power.on {
+  color: #fdffdf;
+  border-color: #a9c957;
+  background: -webkit-linear-gradient(top, #64853b, #36501e);
+}
+.power.on .knob {
+  left: 46px;
+  background: -webkit-linear-gradient(top, #f4f8cf, #a5b65d);
+}
+.powerTxt {
+  position: absolute;
+  left: 27px; right: 2px; top: 0;
+  text-align: center;
+}
+.power.on .powerTxt { left: 2px; right: 27px; }
+
+/* ---------- socket ---------- */
+#socketWrap {
+  position: absolute;
+  left: 98px; right: 100px; top: 7px; bottom: 7px;
+  text-align: center;
+}
+#socket {
+  position: relative;
+  width: 108px; height: 112px;
+  margin: 4px auto 0;
+  border: 1px dashed rgba(225,197,134,.52);
+  border-radius: 6px;
+  background: rgba(3,14,14,.50);
+  box-shadow: inset 0 0 18px rgba(0,0,0,.68);
+  overflow: hidden;
+}
+#socket.filled {
+  border-style: solid;
+  border-color: rgba(190,224,139,.62);
+  box-shadow: inset 0 0 22px rgba(0,0,0,.65), 0 0 10px rgba(191,231,124,.12);
+}
+#socket.overload {
+  border-color: #e26a3c;
+  box-shadow: inset 0 0 22px rgba(0,0,0,.65), 0 0 12px rgba(241,91,47,.3);
+}
+.corner {
+  position: absolute;
+  width: 10px; height: 10px;
+  border-color: #c7a360;
+  border-style: solid;
+  z-index: 5;
+}
+.corner.tl { left: 3px; top: 3px; border-width: 2px 0 0 2px; }
+.corner.tr { right: 3px; top: 3px; border-width: 2px 2px 0 0; }
+.corner.bl { left: 3px; bottom: 3px; border-width: 0 0 2px 2px; }
+.corner.br { right: 3px; bottom: 3px; border-width: 0 2px 2px 0; }
+.socketLabel {
+  position: absolute;
+  left: 0; right: 0; top: 5px;
+  color: #8ba39a;
+  font-size: 6px;
+  letter-spacing: 1.7px;
+  z-index: 4;
+}
+#socketEmpty {
+  position: absolute;
+  left: 0; right: 0; top: 34px;
+  z-index: 3;
+}
+.plus {
+  width: 30px; height: 30px;
+  margin: 0 auto 3px;
+  border: 1px dashed #7f9c91;
+  border-radius: 15px;
+  color: #9db8aa;
+  font: 22px/27px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.socketHint {
+  color: #6f8a82;
+  font-size: 7px;
+  letter-spacing: .4px;
+}
+#socketFilled {
+  position: absolute;
+  left: 0; right: 0; top: 24px;
+  z-index: 6;
+}
+#socketGlow {
+  position: absolute;
+  left: 50%; top: 25px;
+  width: 84px; height: 84px;
+  margin-left: -42px;
+  border-radius: 42px;
+  opacity: 0;
+  -webkit-transition: opacity .35s;
+  pointer-events: none;
+}
+#socketGlow.glowBulb {
+  background: -webkit-radial-gradient(circle, rgba(255,242,156,.90) 0%, rgba(255,214,80,.42) 34%, rgba(255,200,50,0) 70%);
+}
+#socketGlow.glowHeat {
+  background: -webkit-radial-gradient(circle, rgba(255,116,58,.86) 0%, rgba(240,58,20,.38) 34%, rgba(240,48,20,0) 70%);
+}
+#socketIcon {
+  position: relative;
+  display: block;
+  width: 52px; height: 52px;
+  margin: 0 auto;
+  z-index: 2;
+}
+#socketFilled.spin #socketIcon {
+  -webkit-animation: spin 1.3s linear infinite;
+}
+.sname {
+  position: relative;
+  margin-top: 1px;
+  color: #f2e9d4;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: .5px;
+  z-index: 3;
+}
+.sspec {
+  position: relative;
+  margin-top: 1px;
+  color: #93ab9f;
+  font-size: 6.5px;
+  z-index: 3;
+}
+#identLed {
+  position: absolute;
+  right: 6px; top: 6px;
+  width: 6px; height: 6px;
+  border-radius: 3px;
+  background: #354a44;
+  border: 1px solid #0a1513;
+  z-index: 7;
+}
+#identLed.scanning {
+  background: #ffca58;
+  -webkit-animation: blink .55s infinite;
+}
+#identLed.ok { background: #91e464; box-shadow: 0 0 5px #76e33f; }
+#identLed.bad { background: #ff6746; box-shadow: 0 0 5px #ff4e28; }
+#scanLine {
+  position: absolute;
+  left: 6px; right: 6px; top: 12px;
+  height: 1px;
+  background: rgba(154,255,214,.85);
+  box-shadow: 0 0 6px rgba(123,255,194,.9);
+  display: none;
+  z-index: 8;
+}
+#socket.scanning #scanLine {
+  display: block;
+  -webkit-animation: scan 0.7s linear infinite;
+}
+#benchMsg {
+  position: absolute;
+  left: 3px; right: 3px; bottom: 5px;
+  height: 26px;
+  color: #a8bdb2;
+  font-size: 7px;
+  line-height: 12px;
+  text-align: center;
+}
+#benchMsg b { color: #f1d58d; }
+#benchMsg.warn { color: #ff9a74; }
+#ejectBtn {
+  position: absolute;
+  right: 3px; top: 3px;
+  width: 18px; height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #9eb2a7;
+  font: bold 13px/18px Arial, sans-serif;
+  z-index: 9;
+}
+
+/* ---------- probe selector ---------- */
+.probeRow {
+  margin: 4px 5px 0;
+  text-align: center;
+}
+.pb {
+  width: 72px; height: 21px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #4a625c;
+  border-radius: 3px;
+  background: -webkit-linear-gradient(top, #2b4641, #142724);
+  color: #adc4b8;
+  font: 8px/19px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.pb.active {
+  background: -webkit-linear-gradient(top, #f1d58d, #b7893e);
+  border-color: #f0d899;
+  color: #2a200c;
+  font-weight: bold;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+}
+#probeTip {
+  margin: 5px 5px 0;
+  padding-top: 4px;
+  border-top: 1px solid rgba(211,177,104,.18);
+  color: #7f9990;
+  font-size: 6.5px;
+  line-height: 10px;
+  text-align: center;
+}
+#probeTip b { color: #d9c18b; font-weight: normal; }
+
+/* ---------- tray ---------- */
+#tray {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 102px;
+  padding: 0 6px;
+  border-top: 1px solid #6f5a32;
+  background: #273236;
+  background: -webkit-linear-gradient(top, #354549 0%, #202c30 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.16);
+  z-index: 15;
+}
+#tray:before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0; height: 4px;
+  background: -webkit-linear-gradient(top, rgba(0,0,0,.35), transparent);
+}
+.trayHead {
+  height: 19px;
+  padding: 4px 1px 0;
+}
+.trayHead .label {
+  color: #e7d9bc;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.trayHead .hint {
+  float: right;
+  color: #849a9a;
+  font-size: 6.5px;
+  padding-top: 2px;
+}
+#parts {
+  position: relative;
+  width: 100%;
+}
+.part {
+  position: relative;
+  float: left;
+  width: 99px;
+  height: 36px;
+  margin: 0 4px 3px 0;
+  padding: 3px 3px 0;
+  border: 1px solid #8e8061;
+  border-radius: 4px;
+  background: -webkit-linear-gradient(top, #f7f0df 0%, #ddd1b6 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 1px 2px rgba(0,0,0,.45);
+  overflow: hidden;
+}
+.part.third { margin-right: 0; }
+.part.active {
+  border-color: #f0c66f;
+  box-shadow: 0 0 6px rgba(245,200,103,.75), inset 0 0 0 1px #f7e4b0;
+}
+.part:active {
+  background: -webkit-linear-gradient(top, #fff9ea, #e7dcc4);
+}
+.part canvas {
+  position: absolute;
+  left: 3px; top: 4px;
+  width: 27px; height: 27px;
+}
+.partText {
+  position: absolute;
+  left: 32px; top: 4px;
+  width: 63px;
+}
+.partName {
+  display: block;
+  color: #2c2b24;
+  font-size: 9px;
+  font-weight: bold;
+  line-height: 13px;
+  white-space: nowrap;
+}
+.partSpec {
+  display: block;
+  color: #6e634c;
+  font: 6.5px/10px "Courier New", monospace;
+  white-space: nowrap;
+}
+.partTick {
+  position: absolute;
+  right: 3px; top: 3px;
+  width: 4px; height: 4px;
+  border-radius: 2px;
+  background: #a99872;
+}
+.part.active .partTick { background: #4f9e36; }
+
+/* ---------- ghost ---------- */
+#ghost {
+  position: absolute;
+  width: 99px; height: 36px;
+  z-index: 999;
+  padding: 3px;
+  border: 1px solid #f0c66f;
+  border-radius: 4px;
+  background: #f7f0df;
+  box-shadow: 0 8px 16px rgba(0,0,0,.55);
+  opacity: .93;
+  pointer-events: none;
+  -webkit-transform: rotate(-2deg);
+}
+#ghost canvas {
+  position: absolute;
+  left: 3px; top: 4px;
+  width: 27px; height: 27px;
+}
+#ghost .partName { position: absolute; left: 32px; top: 4px; color: #2c2b24; font-size: 9px; font-weight: bold; }
+#ghost .partSpec { position: absolute; left: 32px; top: 18px; color: #6e634c; font: 6.5px "Courier New", monospace; }
+
+/* ---------- help ---------- */
+#help {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(3,10,11,.78);
+  z-index: 500;
+}
+#helpSheet {
+  position: absolute;
+  left: 12px; right: 12px; top: 45px;
+  padding: 13px 14px 12px;
+  border: 1px solid #9b8354;
+  border-radius: 8px;
+  background: #f3ead7;
+  background: -webkit-linear-gradient(top, #f8f1e3 0%, #e7dbc2 100%);
+  box-shadow: 0 8px 24px rgba(0,0,0,.7), inset 0 1px 0 #fff;
+  color: #35342b;
+}
+#helpSheet h2 {
+  margin: 0 0 7px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #c9b994;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #2b2a21;
+}
+#helpSheet h2 span {
+  float: right;
+  color: #9b8a66;
+  font: 7px/20px "Courier New", monospace;
+  letter-spacing: .5px;
+}
+.step {
+  position: relative;
+  min-height: 30px;
+  padding: 0 0 5px 25px;
+}
+.stepNo {
+  position: absolute;
+  left: 0; top: 1px;
+  width: 17px; height: 17px;
+  border-radius: 9px;
+  background: #354b4a;
+  color: #f4e7ca;
+  font: bold 9px/17px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-align: center;
+}
+.step b {
+  display: block;
+  font-size: 9.5px;
+  line-height: 13px;
+  color: #2d2c23;
+}
+.step span {
+  display: block;
+  font-size: 7.5px;
+  line-height: 11px;
+  color: #6d6450;
+}
+.helpNote {
+  margin: 3px 0 8px;
+  padding: 6px 7px;
+  border: 1px solid #d1c3a3;
+  border-radius: 4px;
+  background: rgba(255,255,255,.34);
+  color: #75694f;
+  font-size: 7px;
+  line-height: 11px;
+}
+#closeHelp {
+  display: block;
+  width: 100%;
+  height: 29px;
+  padding: 0;
+  border: 1px solid #7a5c28;
+  border-radius: 5px;
+  background: -webkit-linear-gradient(top, #f0d28d, #b9893e);
+  color: #2b210d;
+  font: bold 10px/27px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: 1px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+}
+
+@-webkit-keyframes spin {
+  from { -webkit-transform: rotate(0deg); }
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes blink {
+  0% { opacity: .35; }
+  50% { opacity: 1; }
+  100% { opacity: .35; }
+}
+@-webkit-keyframes scan {
+  0% { top: 12px; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { top: 100px; opacity: 0; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="topbar">
+    <div id="brandMark">电</div>
+    <div id="brandText">电学实验室</div>
+    <div id="brandSub">AMMETER &amp; VOLTMETER</div>
+    <button id="helpBtn" type="button" aria-label="使用说明">?</button>
+  </div>
+
+  <div id="meters">
+    <div class="meter first" id="meterA">
+      <div class="mhead">
+        <span class="mbadge">A</span><span class="mname">电流表</span>
+        <span class="range" id="aRange">0.6 A</span>
+      </div>
+      <div class="bezel"><canvas id="aGauge" width="134" height="96"></canvas></div>
+      <div class="lcd"><span class="ghost">88.88</span><span class="num" id="aValue">0.00</span><span class="unit">A</span></div>
+      <div class="mfoot"><b>串联</b>接入 · 自动量程</div>
+    </div>
+
+    <div class="meter" id="meterV">
+      <div class="mhead">
+        <span class="mbadge">V</span><span class="mname">电压表</span>
+        <span class="range" id="vRange">3 V</span>
+      </div>
+      <div class="bezel"><canvas id="vGauge" width="134" height="96"></canvas></div>
+      <div class="lcd"><span class="ghost">88.88</span><span class="num" id="vValue">0.00</span><span class="unit">V</span></div>
+      <div class="mfoot" id="vFoot"><b>并联</b>测用电器</div>
+    </div>
+  </div>
+
+  <div id="bench">
+    <div class="benchCol" id="leftCol">
+      <span class="colTitle">电 源</span>
+      <span class="colSub" id="batterySub">6.0V · 内阻0.5Ω</span>
+      <div class="voltRow">
+        <button class="vb first" type="button" data-v="3">3V</button><button class="vb" type="button" data-v="6">6V</button><button class="vb last" type="button" data-v="9">9V</button>
+      </div>
+      <button class="power" id="powerBtn" type="button"><span class="knob"></span><span class="powerTxt" id="powerTxt">合闸</span></button>
+    </div>
+
+    <div id="socketWrap">
+      <div id="socket">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <div class="socketLabel">识别座 · SOCKET</div>
+        <div id="identLed"></div>
+        <div id="scanLine"></div>
+
+        <div id="socketEmpty">
+          <div class="plus">+</div>
+          <div class="socketHint">轻点或拖入<br>用电器</div>
+        </div>
+
+        <div id="socketFilled" class="hidden">
+          <div id="socketGlow"></div>
+          <canvas id="socketIcon" width="52" height="52"></canvas>
+          <div class="sname" id="socketName">小灯泡</div>
+          <div class="sspec" id="socketSpec">6V · 3W</div>
+        </div>
+
+        <button id="ejectBtn" class="hidden" type="button" aria-label="拔出用电器">×</button>
+      </div>
+      <div id="benchMsg">插入用电器开始测试</div>
+    </div>
+
+    <div class="benchCol" id="rightCol">
+      <span class="colTitle">电压表测</span>
+      <div class="probeRow"><button class="pb active" type="button" data-p="load">用电器</button></div>
+      <div class="probeRow"><button class="pb" type="button" data-p="source">电源</button></div>
+      <div class="probeRow"><button class="pb" type="button" data-p="switch">开关</button></div>
+      <div id="probeTip">并联在<b id="probeName">用电器</b><br>两端</div>
+    </div>
+  </div>
+
+  <div id="tray">
+    <div class="trayHead">
+      <span class="label">用 电 器</span>
+      <span class="hint">轻点卡片，或拖入识别座</span>
+    </div>
+    <div id="parts"></div>
+  </div>
+
+  <div id="help" class="hidden">
+    <div id="helpSheet">
+      <h2>实验说明 <span>HOW TO USE</span></h2>
+      <div class="step"><span class="stepNo">1</span><b>插入用电器</b><span>轻点下方卡片，或把它拖到中央的“识别座”。</span></div>
+      <div class="step"><span class="stepNo">2</span><b>选择电源电压</b><span>3V / 6V / 9V，观察不同电压下的偏转。</span></div>
+      <div class="step"><span class="stepNo">3</span><b>合上开关</b><span>电流表串联测电流，电压表并联测电压。</span></div>
+      <div class="step"><span class="stepNo">4</span><b>切换测量点</b><span>电压表可测“用电器”“电源”或“开关”两端。</span></div>
+      <div class="helpNote">电源内阻 0.5Ω、导线电阻 1Ω，两只电表按理想表处理。读数超过用电器额定值时会出现红色过载提示，但元件不会被损坏，可反复实验。</div>
+      <button id="closeHelp" type="button">开 始 实 验</button>
+    </div>
+  </div>
+
+</div>
+
+<script type="text/javascript">
+(function () {
+  "use strict";
+
+  var DPR = window.devicePixelRatio || 1;
+  var WIRE_R = 1.0;
+  var INTERNAL_R = 0.5;
+
+  var LOADS = [
+    { id: "bulb",     name: "小灯泡",   spec: "6V · 3W",     R: 12, ratedI: 0.50, ratedP: 3.0,  kind: "bulb" },
+    { id: "resistor", name: "定值电阻", spec: "10Ω · 1A",    R: 10, ratedI: 1.00, ratedP: 10.0, kind: "resistor" },
+    { id: "motor",    name: "小电动机", spec: "6V · 0.3A",   R: 20, ratedI: 0.30, ratedP: 1.8,  kind: "motor" },
+    { id: "heater",   name: "电热丝",   spec: "4Ω · 2A",     R: 4,  ratedI: 2.00, ratedP: 16.0, kind: "heater" },
+    { id: "fan",      name: "小风扇",   spec: "6V · 0.2A",   R: 30, ratedI: 0.20, ratedP: 1.2,  kind: "fan" },
+    { id: "graphite", name: "铅笔芯",   spec: "8Ω · 0.5A",   R: 8,  ratedI: 0.50, ratedP: 2.0,  kind: "graphite" }
+  ];
+
+  var state = {
+    voltage: 6,
+    on: false,
+    load: null,
+    probe: "load",
+    scanning: false,
+    overload: false,
+    aRange: 0.6,
+    vRange: 3,
+    aTarget: 0,
+    vTarget: 0,
+    aNeedle: 0,
+    vNeedle: 0,
+    aValue: 0,
+    vValue: 0,
+    power: 0
+  };
+
+  var gaugeDirty = true;
+  var scanTimer = null;
+  var drag = null;
+  var ghost = null;
+  var suppressClick = 0;
+
+  function $(id) { return document.getElementById(id); }
+
+  function addClass(el, cls) {
+    if (!el) { return; }
+    var s = " " + (el.className || "") + " ";
+    if (s.indexOf(" " + cls + " ") < 0) {
+      el.className = (el.className ? el.className + " " : "") + cls;
+    }
+  }
+
+  function removeClass(el, cls) {
+    if (!el) { return; }
+    var out = [];
+    var parts = (el.className || "").split(/\s+/);
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i] && parts[i] !== cls) { out.push(parts[i]); }
+    }
+    el.className = out.join(" ");
+  }
+
+  function setClass(el, cls, on) {
+    if (on) { addClass(el, cls); } else { removeClass(el, cls); }
+  }
+
+  function findLoad(id) {
+    for (var i = 0; i < LOADS.length; i++) {
+      if (LOADS[i].id === id) { return LOADS[i]; }
+    }
+    return null;
+  }
+
+  /* ---------- canvas helpers ---------- */
+  function prepCanvas(canvas, w, h) {
+    var pw = Math.round(w * DPR);
+    var ph = Math.round(h * DPR);
+    if (canvas.width !== pw || canvas.height !== ph) {
+      canvas.width = pw;
+      canvas.height = ph;
+    }
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    var ctx = canvas.getContext("2d");
+    if (ctx.setTransform) { ctx.setTransform(DPR, 0, 0, DPR, 0, 0); }
+    else { ctx.scale(DPR, DPR); }
+    return ctx;
+  }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
+  /* ---------- analog gauge ---------- */
+  function drawGauge(canvasId, maxValue, fraction, unit) {
+    var canvas = $(canvasId);
+    if (!canvas) { return; }
+    var w = 134, h = 96;
+    var ctx = prepCanvas(canvas, w, h);
+    ctx.clearRect(0, 0, w, h);
+
+    var bg = ctx.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, "#fbf5e6");
+    bg.addColorStop(0.45, "#f1e6cd");
+    bg.addColorStop(1, "#ddcdae");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    ctx.strokeStyle = "rgba(96,76,42,.35)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
+
+    var cx = 67, cy = 85, R = 51;
+    var start = 215 * Math.PI / 180;
+    var end = 325 * Math.PI / 180;
+
+    // red warning sector near full scale
+    ctx.beginPath();
+    ctx.arc(cx, cy, R - 5, start + (end - start) * 0.86, end);
+    ctx.strokeStyle = "rgba(190,49,31,.55)";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // scale arc
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, start, end);
+    ctx.strokeStyle = "#453d2b";
+    ctx.lineWidth = 1.1;
+    ctx.stroke();
+
+    // ticks
+    var count = 30;
+    for (var i = 0; i <= count; i++) {
+      var a = start + (end - start) * (i / count);
+      var major = (i % 10 === 0);
+      var mid = (i % 5 === 0);
+      var r1 = R - (major ? 8 : (mid ? 5 : 3));
+      var r2 = R;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+      ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+      ctx.strokeStyle = major ? "#2a2418" : "#5d533c";
+      ctx.lineWidth = major ? 1.5 : (mid ? 1 : 0.6);
+      ctx.stroke();
+    }
+
+    // labels: 0, 1/3, 2/3, full
+    var labelValues = [
+      0,
+      maxValue / 3,
+      maxValue * 2 / 3,
+      maxValue
+    ];
+    ctx.fillStyle = "#302818";
+    ctx.font = "bold 7px Helvetica, Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (var j = 0; j < labelValues.length; j++) {
+      var la = start + (end - start) * (j / 3);
+      var lx = cx + Math.cos(la) * (R - 17);
+      var ly = cy + Math.sin(la) * (R - 17);
+      var txt;
+      if (maxValue === 0.6) { txt = labelValues[j] === 0 ? "0" : labelValues[j].toFixed(1); }
+      else { txt = String(Math.round(labelValues[j] * 10) / 10); }
+      ctx.fillText(txt, lx, ly);
+    }
+
+    // brand / type marks
+    ctx.fillStyle = "#7a6b4c";
+    ctx.font = "6px Helvetica, Arial, sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("DC", 7, 12);
+    ctx.textAlign = "right";
+    ctx.fillText("2.5级", 127, 12);
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#3d3525";
+    ctx.font = "bold 11px Helvetica, Arial, sans-serif";
+    ctx.fillText(unit, cx, cy - 10);
+    ctx.fillStyle = "#8b7855";
+    ctx.font = "5px Helvetica, Arial, sans-serif";
+    ctx.fillText("模拟电表", cx, cy - 1);
+
+    // needle
+    var nf = fraction;
+    if (nf < 0) { nf = 0; }
+    if (nf > 1.02) { nf = 1.02; }
+    var na = start + (end - start) * nf;
+    var len = R - 4;
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(na);
+    ctx.beginPath();
+    ctx.moveTo(-5, 0);
+    ctx.lineTo(len, 0);
+    ctx.strokeStyle = "#c33a25";
+    ctx.lineWidth = 1.7;
+    ctx.lineCap = "round";
+    ctx.shadowColor = "rgba(30,10,0,.35)";
+    ctx.shadowBlur = 2;
+    ctx.shadowOffsetY = 1;
+    ctx.stroke();
+    ctx.restore();
+
+    // pivot
+    ctx.beginPath();
+    ctx.arc(cx, cy, 4.3, 0, Math.PI * 2);
+    ctx.fillStyle = "#2d2b26";
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(cx, cy, 1.7, 0, Math.PI * 2);
+    ctx.fillStyle = "#b8a67f";
+    ctx.fill();
+
+    // glass highlight
+    ctx.beginPath();
+    ctx.arc(cx, cy - 1, R + 9, Math.PI * 1.05, Math.PI * 1.55);
+    ctx.strokeStyle = "rgba(255,255,255,.34)";
+    ctx.lineWidth = 2.2;
+    ctx.stroke();
+  }
+
+  /* ---------- appliance icons ---------- */
+  function drawIcon(canvas, kind, size, level) {
+    if (!canvas) { return; }
+    var ctx = prepCanvas(canvas, size, size);
+    ctx.clearRect(0, 0, size, size);
+    ctx.save();
+    ctx.scale(size / 56, size / 56);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    if (kind === "bulb") {
+      var lit = level > 0;
+      if (lit) {
+        var gl = ctx.createRadialGradient(28, 21, 2, 28, 21, 21);
+        gl.addColorStop(0, "rgba(255,250,190," + Math.min(0.95, 0.25 + level * 0.7) + ")");
+        gl.addColorStop(0.45, "rgba(255,220,92," + Math.min(0.55, level * 0.45) + ")");
+        gl.addColorStop(1, "rgba(255,210,80,0)");
+        ctx.fillStyle = gl;
+        ctx.beginPath();
+        ctx.arc(28, 21, 21, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(28, 20, 11, 0, Math.PI * 2);
+      ctx.fillStyle = lit ? "rgba(255,236,142,.92)" : "rgba(224,232,224,.80)";
+      ctx.fill();
+      ctx.strokeStyle = "#5c563f";
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(25, 17, 4, 3.4, 5.2);
+      ctx.strokeStyle = "rgba(255,255,255,.85)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      // filament
+      ctx.beginPath();
+      ctx.moveTo(23, 15); ctx.lineTo(24, 22); ctx.lineTo(28, 16); ctx.lineTo(32, 22); ctx.lineTo(33, 15);
+      ctx.strokeStyle = lit ? "#ff7d26" : "#8b7646";
+      ctx.lineWidth = 0.9;
+      ctx.stroke();
+      // base
+      ctx.fillStyle = "#9a9587";
+      roundRect(ctx, 22, 31, 12, 4, 1); ctx.fill();
+      ctx.fillStyle = "#6f6a5e";
+      roundRect(ctx, 23, 35, 10, 3, 1); ctx.fill();
+      ctx.fillStyle = "#b9b3a3";
+      roundRect(ctx, 24, 38, 8, 3, 1); ctx.fill();
+      ctx.strokeStyle = "#5b564b";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(27, 27); ctx.lineTo(27, 31); ctx.moveTo(29, 27); ctx.lineTo(29, 31); ctx.stroke();
+      // rays
+      if (level > 0.55) {
+        ctx.strokeStyle = "rgba(255,203,73,.8)";
+        ctx.lineWidth = 1.2;
+        for (var i = 0; i < 6; i++) {
+          var a = i * Math.PI / 3 + 0.3;
+          ctx.beginPath();
+          ctx.moveTo(28 + Math.cos(a) * 15, 20 + Math.sin(a) * 15);
+          ctx.lineTo(28 + Math.cos(a) * 19, 20 + Math.sin(a) * 19);
+          ctx.stroke();
+        }
+      }
+    } else if (kind === "resistor") {
+      ctx.strokeStyle = "#8b8c83";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(4, 28); ctx.lineTo(13, 28); ctx.moveTo(43, 28); ctx.lineTo(52, 28); ctx.stroke();
+      ctx.fillStyle = "#d8bf91";
+      roundRect(ctx, 12, 19, 32, 18, 7); ctx.fill();
+      ctx.strokeStyle = "#796540";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      var bands = ["#7a4a25", "#242019", "#b23f2c", "#d6b04f"];
+      for (var b = 0; b < bands.length; b++) {
+        ctx.fillStyle = bands[b];
+        ctx.fillRect(17 + b * 6, 20, 2.6, 16);
+      }
+      ctx.fillStyle = "rgba(255,255,255,.35)";
+      roundRect(ctx, 15, 21, 26, 4, 2); ctx.fill();
+    } else if (kind === "motor") {
+      ctx.beginPath();
+      ctx.arc(28, 26, 15, 0, Math.PI * 2);
+      ctx.fillStyle = "#9aa1a1";
+      ctx.fill();
+      ctx.strokeStyle = "#4b5354";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(28, 26, 10, 0, Math.PI * 2);
+      ctx.fillStyle = "#d9d2bf";
+      ctx.fill();
+      ctx.strokeStyle = "#7b7058";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = "#3e4545";
+      ctx.font = "bold 11px Helvetica, Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("M", 28, 27);
+      ctx.save();
+      ctx.translate(28, 26);
+      ctx.rotate(level > 0 ? 0.6 : 0);
+      ctx.strokeStyle = "#5c6464";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(0, -2); ctx.lineTo(0, -16); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -17, 2, 0, Math.PI * 2); ctx.fillStyle = "#5c6464"; ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = "#5d6260";
+      roundRect(ctx, 18, 42, 20, 4, 2); ctx.fill();
+      ctx.fillStyle = "#8e8879";
+      roundRect(ctx, 23, 45, 10, 3, 1); ctx.fill();
+    } else if (kind === "heater") {
+      ctx.strokeStyle = "#7c6f58";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(6, 28); ctx.lineTo(13, 28); ctx.moveTo(43, 28); ctx.lineTo(50, 28); ctx.stroke();
+      ctx.fillStyle = "#cfc4a9";
+      roundRect(ctx, 10, 20, 36, 16, 3); ctx.fill();
+      ctx.strokeStyle = "#8c7a5c";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.beginPath();
+      for (var k = 0; k < 8; k++) {
+        var x = 14 + k * 4;
+        if (k === 0) { ctx.moveTo(x, 23); } else { ctx.lineTo(x, 23 + (k % 2 ? 10 : 0)); }
+      }
+      ctx.strokeStyle = level > 0.15 ? "#ef4b24" : "#96654c";
+      ctx.lineWidth = 2.1;
+      ctx.stroke();
+      if (level > 0.3) {
+        ctx.globalAlpha = Math.min(0.8, level);
+        ctx.strokeStyle = "#ffb33b";
+        ctx.lineWidth = 0.9;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+    } else if (kind === "fan") {
+      ctx.beginPath();
+      ctx.arc(28, 27, 17, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(190,212,206,.22)";
+      ctx.fill();
+      ctx.strokeStyle = "#687f7b";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.save();
+      ctx.translate(28, 27);
+      ctx.rotate(level > 0 ? 0.8 : 0);
+      for (var f = 0; f < 3; f++) {
+        ctx.save();
+        ctx.rotate(f * Math.PI * 2 / 3);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(4, -12, 0, -15);
+        ctx.quadraticCurveTo(-8, -11, 0, 0);
+        ctx.fillStyle = "#91b5ad";
+        ctx.fill();
+        ctx.strokeStyle = "#5e7c76";
+        ctx.lineWidth = 0.7;
+        ctx.stroke();
+        ctx.restore();
+      }
+      ctx.beginPath();
+      ctx.arc(0, 0, 3.2, 0, Math.PI * 2);
+      ctx.fillStyle = "#405552";
+      ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = "#5d6260";
+      roundRect(ctx, 23, 44, 10, 6, 2); ctx.fill();
+    } else if (kind === "graphite") {
+      ctx.save();
+      ctx.translate(28, 28);
+      ctx.rotate(-0.62);
+      ctx.fillStyle = "#4b4c4d";
+      roundRect(ctx, -19, -4, 38, 8, 3); ctx.fill();
+      ctx.strokeStyle = "#2e2f30";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = "#b88b52";
+      ctx.fillRect(-19, -4, 4, 8);
+      ctx.fillRect(15, -4, 4, 8);
+      ctx.fillStyle = "rgba(255,255,255,.22)";
+      roundRect(ctx, -14, -2.5, 26, 2, 1); ctx.fill();
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  /* ---------- build tray ---------- */
+  function buildTray() {
+    var parts = $("parts");
+    for (var i = 0; i < LOADS.length; i++) {
+      var load = LOADS[i];
+      var el = document.createElement("div");
+      el.className = "part" + (i % 3 === 2 ? " third" : "");
+      el.setAttribute("data-id", load.id);
+      el.setAttribute("data-index", String(i));
+
+      var cv = document.createElement("canvas");
+      cv.width = 54;
+      cv.height = 54;
+      el.appendChild(cv);
+
+      var box = document.createElement("div");
+      box.className = "partText";
+      var nm = document.createElement("span");
+      nm.className = "partName";
+      nm.appendChild(document.createTextNode(load.name));
+      var sp = document.createElement("span");
+      sp.className = "partSpec";
+      sp.appendChild(document.createTextNode(load.spec));
+      box.appendChild(nm);
+      box.appendChild(sp);
+      el.appendChild(box);
+
+      var tick = document.createElement("span");
+      tick.className = "partTick";
+      el.appendChild(tick);
+
+      drawIcon(cv, load.kind, 27, 0);
+      parts.appendChild(el);
+
+      attachPartEvents(el);
+    }
+  }
+
+  function attachPartEvents(el) {
+    el.addEventListener("touchstart", function (e) {
+      startCandidate(el, e.touches[0]);
+    }, false);
+
+    el.addEventListener("mousedown", function (e) {
+      if (e.button !== 0) { return; }
+      startCandidate(el, e);
+    }, false);
+
+    el.addEventListener("click", function (e) {
+      if (nowMs() < suppressClick) { return; }
+      insertLoad(el.getAttribute("data-id"));
+    }, false);
+  }
+
+  /* ---------- drag ---------- */
+  function startCandidate(el, p) {
+    if (!p) { return; }
+    drag = {
+      el: el,
+      id: el.getAttribute("data-id"),
+      startX: p.clientX,
+      startY: p.clientY,
+      x: p.clientX,
+      y: p.clientY,
+      offsetX: p.clientX - el.getBoundingClientRect().left,
+      offsetY: p.clientY - el.getBoundingClientRect().top,
+      moved: false
+    };
+  }
+
+  function beginDrag() {
+    if (!drag || drag.moved) { return; }
+    drag.moved = true;
+
+    var r = drag.el.getBoundingClientRect();
+    ghost = document.createElement("div");
+    ghost.id = "ghost";
+    ghost.style.left = (drag.startX - drag.offsetX) + "px";
+    ghost.style.top = (drag.startY - drag.offsetY) + "px";
+    ghost.style.width = r.width + "px";
+    ghost.style.height = r.height + "px";
+
+    var load = findLoad(drag.id);
+    var cv = document.createElement("canvas");
+    cv.width = 54; cv.height = 54;
+    ghost.appendChild(cv);
+    var nm = document.createElement("div");
+    nm.className = "partName";
+    nm.appendChild(document.createTextNode(load.name));
+    var sp = document.createElement("div");
+    sp.className = "partSpec";
+    sp.appendChild(document.createTextNode(load.spec));
+    ghost.appendChild(nm);
+    ghost.appendChild(sp);
+    document.body.appendChild(ghost);
+    drawIcon(cv, load.kind, 27, 0);
+  }
+
+  function moveGhost(x, y) {
+    if (!ghost) { return; }
+    ghost.style.left = (x - drag.offsetX) + "px";
+    ghost.style.top = (y - drag.offsetY) + "px";
+  }
+
+  function overSocket(x, y) {
+    var r = $("socket").getBoundingClientRect();
+    return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+  }
+
+  function finishDrag(x, y) {
+    var shouldInsert = drag && drag.moved && overSocket(x, y);
+    var loadId = drag ? drag.id : null;
+    if (ghost && ghost.parentNode) { ghost.parentNode.removeChild(ghost); }
+    ghost = null;
+    if (shouldInsert) {
+      suppressClick = nowMs() + 500;
+      insertLoad(loadId);
+    }
+    drag = null;
+  }
+
+  function onTouchMove(e) {
+    if (!drag) { return; }
+    var t = e.touches[0];
+    if (!t) { return; }
+    var dx = t.clientX - drag.startX;
+    var dy = t.clientY - drag.startY;
+    if (!drag.moved && (Math.abs(dx) > 7 || Math.abs(dy) > 7)) {
+      beginDrag();
+    }
+    if (drag.moved) {
+      if (e.preventDefault) { e.preventDefault(); }
+      moveGhost(t.clientX, t.clientY);
+    }
+  }
+
+  function onTouchEnd(e) {
+    if (!drag) { return; }
+    var t = e.changedTouches && e.changedTouches[0];
+    if (drag.moved) {
+      if (e.preventDefault) { e.preventDefault(); }
+      finishDrag(t ? t.clientX : drag.x, t ? t.clientY : drag.y);
+      suppressClick = nowMs() + 500;
+    } else {
+      suppressClick = nowMs() + 500;
+      insertLoad(drag.id);
+      drag = null;
+    }
+  }
+
+  function onMouseMove(e) {
+    if (!drag) { return; }
+    var dx = e.clientX - drag.startX;
+    var dy = e.clientY - drag.startY;
+    if (!drag.moved && (Math.abs(dx) > 7 || Math.abs(dy) > 7)) {
+      beginDrag();
+    }
+    if (drag.moved) {
+      e.preventDefault();
+      moveGhost(e.clientX, e.clientY);
+    }
+  }
+
+  function onMouseUp(e) {
+    if (!drag) { return; }
+    if (drag.moved) {
+      finishDrag(e.clientX, e.clientY);
+      suppressClick = nowMs() + 500;
+    } else {
+      drag = null;
+    }
+  }
+
+  /* ---------- physics ---------- */
+  function compute() {
+    var load = state.load;
+    var E = state.voltage;
+    var I = 0;
+    var vSource = E;
+    var vSwitch = 0;
+    var vLoad = 0;
+
+    if (load && state.on) {
+      I = E / (load.R + WIRE_R + INTERNAL_R);
+      vLoad = I * load.R;
+      vSource = E - I * INTERNAL_R;
+      vSwitch = 0;
+    } else if (!state.on) {
+      vSource = E;
+      vSwitch = E;
+      vLoad = 0;
+    }
+
+    var v = 0;
+    if (state.probe === "load") { v = vLoad; }
+    else if (state.probe === "source") { v = vSource; }
+    else { v = vSwitch; }
+
+    if (!load) { vLoad = 0; if (state.probe === "load") { v = 0; } }
+
+    var P = 0;
+    var overload = false;
+    if (load && I > 0) {
+      P = I * I * load.R;
+      if (I > load.ratedI * 1.15 + 0.0001 || P > load.ratedP * 1.15 + 0.0001) {
+        overload = true;
+      }
+    }
+
+    state.aValue = I;
+    state.vValue = v;
+    state.power = P;
+    state.overload = overload;
+
+    var aR = (I <= 0.6 + 0.00001) ? 0.6 : 3.0;
+    var vR = (v <= 3.0 + 0.00001) ? 3.0 : 15.0;
+    if (aR !== state.aRange) { state.aRange = aR; gaugeDirty = true; }
+    if (vR !== state.vRange) { state.vRange = vR; gaugeDirty = true; }
+
+    state.aTarget = Math.min(1.02, I / aR);
+    state.vTarget = Math.min(1.02, v / vR);
+
+    updateReadouts();
+  }
+
+  function nowMs() { return new Date().getTime(); }
+
+  function fmt(v) {
+    if (v < 0.005) { return "0.00"; }
+    return v.toFixed(2);
+  }
+
+  function updateReadouts() {
+    $("aValue").innerHTML = fmt(state.aValue);
+    $("vValue").innerHTML = fmt(state.vValue);
+    $("aRange").innerHTML = state.aRange.toFixed(1) + " A";
+    $("vRange").innerHTML = (state.vRange === 3 ? "3" : "15") + " V";
+    $("vFoot").innerHTML = "<b>并联</b>测" + (state.probe === "load" ? "用电器" : (state.probe === "source" ? "电源" : "开关"));
+    var pn = $("probeName");
+    pn.innerHTML = state.probe === "load" ? "用电器" : (state.probe === "source" ? "电源" : "开关");
+    $("batterySub").innerHTML = state.voltage.toFixed(1) + "V · 内阻0.5Ω";
+
+    var msg = "";
+    var warn = false;
+    if (state.scanning) {
+      msg = "正在识别用电器…";
+    } else if (!state.load) {
+      msg = "插入用电器开始测试";
+    } else if (!state.on) {
+      msg = "已识别 <b>" + state.load.name + "</b><br>合上开关读取数据";
+    } else if (state.overload) {
+      msg = "⚠ 过载 · 超过额定值";
+      warn = true;
+    } else {
+      msg = "电路接通 · 功率 " + state.power.toFixed(2) + " W";
+    }
+    $("benchMsg").innerHTML = msg;
+    setClass($("benchMsg"), "warn", warn);
+    setClass($("socket"), "overload", state.overload);
+
+    var led = $("identLed");
+    led.className = "";
+    if (state.scanning) { addClass(led, "scanning"); }
+    else if (!state.load) { /* off */ }
+    else if (state.overload) { addClass(led, "bad"); }
+    else { addClass(led, "ok"); }
+
+    // glow level
+    var level = 0;
+    if (state.load && state.on) {
+      if (state.load.kind === "bulb") { level = state.power / 3.0; }
+      else if (state.load.kind === "heater") { level = state.power / 16.0; }
+    }
+    if (level > 1.2) { level = 1.2; }
+    var glow = $("socketGlow");
+    if (glow) {
+      glow.style.opacity = String(Math.min(0.95, level * 0.9));
+      glow.className = state.load && state.load.kind === "heater" ? "glowHeat" : "glowBulb";
+    }
+    var filled = $("socketFilled");
+    if (filled) {
+      setClass(filled, "spin", !!(state.load && state.on && (state.load.kind === "motor" || state.load.kind === "fan")));
+    }
+    if (state.load) {
+      drawIcon($("socketIcon"), state.load.kind, 52, level);
+    }
+  }
+
+  /* ---------- UI state ---------- */
+  function updatePowerButton() {
+    var b = $("powerBtn");
+    setClass(b, "on", state.on);
+    $("powerTxt").innerHTML = state.on ? "断开" : "合闸";
+  }
+
+  function updateVoltageButtons() {
+    var btns = document.getElementsByClassName("vb");
+    for (var i = 0; i < btns.length; i++) {
+      var v = parseInt(btns[i].getAttribute("data-v"), 10);
+      setClass(btns[i], "active", v === state.voltage);
+    }
+  }
+
+  function updateProbeButtons() {
+    var btns = document.getElementsByClassName("pb");
+    for (var i = 0; i < btns.length; i++) {
+      setClass(btns[i], "active", btns[i].getAttribute("data-p") === state.probe);
+    }
+  }
+
+  function clearScanTimer() {
+    if (scanTimer) {
+      clearTimeout(scanTimer);
+      scanTimer = null;
+    }
+  }
+
+  function insertLoad(id) {
+    var load = findLoad(id);
+    if (!load) { return; }
+    clearScanTimer();
+    state.load = load;
+    state.on = false;
+    state.scanning = true;
+    state.overload = false;
+    updatePowerButton();
+
+    $("socketEmpty").className = "hidden";
+    $("socketFilled").className = "";
+    $("ejectBtn").className = "hidden";
+    $("socketName").innerHTML = "识别中…";
+    $("socketSpec").innerHTML = "READING";
+    drawIcon($("socketIcon"), load.kind, 52, 0);
+    setClass($("socket"), "filled", true);
+    setClass($("socket"), "scanning", true);
+
+    var parts = document.getElementsByClassName("part");
+    for (var i = 0; i < parts.length; i++) {
+      setClass(parts[i], "active", parts[i].getAttribute("data-id") === load.id);
+    }
+
+    compute();
+
+    scanTimer = setTimeout(function () {
+      state.scanning = false;
+      setClass($("socket"), "scanning", false);
+      $("socketName").innerHTML = load.name;
+      $("socketSpec").innerHTML = load.spec;
+      $("ejectBtn").className = "";
+      compute();
+    }, 520);
+  }
+
+  function ejectLoad() {
+    clearScanTimer();
+    state.load = null;
+    state.on = false;
+    state.scanning = false;
+    state.overload = false;
+    $("socketEmpty").className = "";
+    $("socketFilled").className = "hidden";
+    $("ejectBtn").className = "hidden";
+    $("socketName").innerHTML = "";
+    $("socketSpec").innerHTML = "";
+    $("socketGlow").style.opacity = "0";
+    setClass($("socket"), "filled", false);
+    setClass($("socket"), "scanning", false);
+    setClass($("socket"), "overload", false);
+    updatePowerButton();
+
+    var parts = document.getElementsByClassName("part");
+    for (var i = 0; i < parts.length; i++) {
+      removeClass(parts[i], "active");
+    }
+    compute();
+  }
+
+  function setVoltage(v) {
+    state.voltage = v;
+    updateVoltageButtons();
+    compute();
+  }
+
+  function togglePower() {
+    if (!state.load) {
+      $("benchMsg").innerHTML = "请先插入用电器";
+      setClass($("benchMsg"), "warn", true);
+      return;
+    }
+    if (state.scanning) { return; }
+    state.on = !state.on;
+    updatePowerButton();
+    compute();
+  }
+
+  function setProbe(p) {
+    state.probe = p;
+    updateProbeButtons();
+    compute();
+  }
+
+  function showHelp() {
+    $("help").className = "";
+  }
+
+  function hideHelp() {
+    $("help").className = "hidden";
+  }
+
+  /* ---------- animation ---------- */
+  function tick() {
+    var moving = false;
+    var diffA = state.aTarget - state.aNeedle;
+    var diffV = state.vTarget - state.vNeedle;
+    if (Math.abs(diffA) > 0.0008) {
+      state.aNeedle += diffA * 0.19;
+      moving = true;
+    } else {
+      state.aNeedle = state.aTarget;
+    }
+    if (Math.abs(diffV) > 0.0008) {
+      state.vNeedle += diffV * 0.19;
+      moving = true;
+    } else {
+      state.vNeedle = state.vTarget;
+    }
+    if (moving || gaugeDirty) {
+      drawGauge("aGauge", state.aRange, state.aNeedle, "A");
+      drawGauge("vGauge", state.vRange, state.vNeedle, "V");
+      gaugeDirty = false;
+    }
+  }
+
+  /* ---------- boot ---------- */
+  function boot() {
+    buildTray();
+    updateVoltageButtons();
+    updateProbeButtons();
+    updatePowerButton();
+    $("help").className = "hidden";
+
+    $("helpBtn").addEventListener("click", showHelp, false);
+    $("closeHelp").addEventListener("click", hideHelp, false);
+    $("help").addEventListener("click", function (e) {
+      if (e.target === $("help")) { hideHelp(); }
+    }, false);
+
+    $("powerBtn").addEventListener("click", togglePower, false);
+    $("ejectBtn").addEventListener("click", function (e) {
+      if (e.stopPropagation) { e.stopPropagation(); }
+      ejectLoad();
+    }, false);
+
+    var vbs = document.getElementsByClassName("vb");
+    for (var i = 0; i < vbs.length; i++) {
+      vbs[i].addEventListener("click", function () {
+        setVoltage(parseInt(this.getAttribute("data-v"), 10));
+      }, false);
+    }
+    var pbs = document.getElementsByClassName("pb");
+    for (var j = 0; j < pbs.length; j++) {
+      pbs[j].addEventListener("click", function () {
+        setProbe(this.getAttribute("data-p"));
+      }, false);
+    }
+
+    document.addEventListener("touchmove", onTouchMove, false);
+    document.addEventListener("touchend", onTouchEnd, false);
+    document.addEventListener("touchcancel", function () {
+      if (ghost && ghost.parentNode) { ghost.parentNode.removeChild(ghost); }
+      ghost = null;
+      drag = null;
+    }, false);
+    document.addEventListener("mousemove", onMouseMove, false);
+    document.addEventListener("mouseup", onMouseUp, false);
+
+    // prevent double-tap zoom in old Safari
+    document.addEventListener("gesturestart", function (e) { e.preventDefault(); }, false);
+
+    setTimeout(function () {
+      drawGauge("aGauge", 0.6, 0, "A");
+      drawGauge("vGauge", 3, 0, "V");
+    }, 30);
+
+    compute();
+    setInterval(tick, 40);
+  }
+
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    setTimeout(boot, 0);
+  } else {
+    document.addEventListener("DOMContentLoaded", boot, false);
+  }
+})();
+</script>
+</body>
+</html>
+
